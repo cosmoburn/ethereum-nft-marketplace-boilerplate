@@ -13,6 +13,12 @@ module.exports = {
       network_id: 1337,
     },
   },
+
+  compilers: {
+   solc: {
+     version: "0.8.4"  // ex:  "0.4.20". (Default: Truffle's installed solc)
+   }
+}
   //
   // Truffle DB is currently disabled by default; to enable it, change enabled:
   // false to enabled: true. The default storage location can also be
