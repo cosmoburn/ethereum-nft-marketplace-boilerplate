@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import styled from '@emotion/styled'
 
+import PrimaryButton from '../../components/PrimaryButton/PrimaryButton'
+
 // Option Constants With Header as First Item
 const bgOtions = ["Background", "Aquamarine","Army Green","Blue","Gray","New Punk Blue","Orange","Purple","Yellow"]
 const clothesOptions = ["Clothes","none","Admirals Coat","Bandolier","Bayc T Black","Bayc T Red","Biker Vest","Black Holes T","Black Suit","Black T","Blue Dress","Bone Necklace","Bone Tee","Caveman Pelt","Cowboy Shirt","Guayabera","Hawaiian","Hip Hop","Kings Robe","Lab Coat","Leather Jacket","Leather Punk Jacket","Lumberjack Shirt","Navy Striped Tee","Pimp Coat","Prison Jumpsuit","Prom Dress","Puffy Vest","Rainbow Suspenders","Sailor Shirt","Service","Sleeveless Logo T","Sleeveless T","Smoking Jacket","Space Suit","Striped Tee","Stunt Jacket","Tanktop","Tie Dye","Toga","Tuxedo Tee","Tweed Suit","Vietnam Jacket","Wool Turtleneck","Work Vest"]
@@ -17,13 +19,20 @@ const onOptionHeaderClicked = (filterType, dispatch) => {
 
 const onOptionClicked = (option, filterType, dispatch) => {
   dispatch({type: 'select', key: filterType, value: option})
-};
+}
+
+const onClearFilters = (dispatch) => {
+  dispatch({type: 'reset'})
+}
 
 const DropDown = ({state, displayValue, options, filterType, dispatch}) => {
   return (
     <>
       <DropDownHeader onClick={() => onOptionHeaderClicked(filterType, dispatch)}>
-        { displayValue || options[0]}
+        <DropDownTitle>
+          { displayValue || options[0]}
+        </DropDownTitle>
+        <DropDownArrow open={state.selectorIsOpen && state.selectedFilter === filterType}/>
       </DropDownHeader>
       {(state.selectorIsOpen && state.selectedFilter === filterType) && (
         <DropDownListContainer>
@@ -52,61 +61,112 @@ const Filter = ({state, dispatch}) => {
         <DropDown state={state} displayValue={state.hat} options={hatOptions} filterType={"hat"} dispatch={dispatch}/>
         <DropDown state={state} displayValue={state.mouth} options={mouthOptions} filterType={"mouth"} dispatch={dispatch}/>
       </DropDownContainer>
+      <ButtonContainer>
+        <PrimaryButton onClick={() => onClearFilters(dispatch)} text="Reset Filters" />
+      </ButtonContainer>
     </Main>
   )
 }
 
 // Styles
 const Main = styled("div")`
-    margin: 0px 10px 0px 10px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const DropDownContainer = styled("div")`
-    width: 170px;
+    width: 200px;
 `;
 
 const DropDownHeader = styled("div")`
-    padding: 0.4em 2em 0.4em 1em;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
-    font-weight: 500;
-    font-size: 0.8rem;
-    color: #BFC500;
-    border: 0.1rem solid #BFC500;
-    border-right: 0px;
-    border-left: 0px;
-    border-top: 0px;
-`;
+  padding: 0 0 5px;
+  margin: 0 0 20px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+  border-bottom: 0.1rem solid #BFC500;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+`
+
+const DropDownTitle = styled.div`
+  font-weight: 500;
+  font-size: 0.8rem;
+  font-style: italic;
+  text-transform: uppercase;
+  color: #BFC500;
+`
+
+const DropDownArrow = styled.div`
+  position: relative;
+  height: 10px;
+  width: 10px;
+  
+  :before, :after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 0.1rem;
+    height: 100%;
+    transition: all .25s;
+  }
+  
+  :before {
+    left: -10px;
+    transform: ${(p) => p.open ? 'rotate(45deg)' : 'rotate(-45deg)'};
+    background-color: #bfc500;
+  }
+  
+  :after {
+    left: -4px;
+    transform: ${(p) => p.open ? 'rotate(-45deg)' : 'rotate(45deg)'};
+    background-color: #bfc500;
+  }
+`
 
 const DropDownListContainer = styled("div")`
-    width: 170px;
-    position:relative;
-`;
+  width: 100%;
+  position:relative;
+  top: -20px;
+  z-index: 10;
+`
 
 const DropDownList = styled("ul")`
-    width: 170px;
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    padding-left: 1em;
-    background: #BFC500;
-    border:none;
-    box-sizing: border-box;
-    color: black;
-    font-size: 0.8rem;
-    font-weight: 500;
-    height: 150px;
-    overflow-y: scroll;
-    &:first-child {
-        padding-top: 0.8em;
-    }
-    cursor: pointer;
-`;
+  width: 100%;
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  background: #BFC500;
+  border:none;
+  box-sizing: border-box;
+  color: black;
+  font-size: 0.8rem;
+  font-weight: 500;
+  height: 150px;
+  overflow-y: scroll;
+  cursor: pointer;
+  
+`
 
 const ListItem = styled("li")`
-    list-style: none;
-    margin-bottom: 0.8em;
-    padding: 0.4em 2em 0.4em 1em;
-    cursor: pointer;
-`;
+  list-style: none;
+  cursor: pointer;
+  padding: 0 22px;
+  display: block;
+  line-height: 60px;
+  transition: all .25s;
+  font-size: 8px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  :hover {
+    background: #929600;
+  }
+`
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+`
 
 export default Filter

@@ -19,6 +19,7 @@ import Filter from './Filter'
 import CommonContainer from '../components/CommonContainer/CommonContainer'
 import Header from '../components/Header/Header'
 import PageTitle from '../components/PageTitle/PageTitle'
+import NFTCard from '../components/NFTCard/NFTCard'
 
 
 const { Meta } = Card;
@@ -206,40 +207,41 @@ function NFTTokenIds({ collection, }) {
         <Filter state={state} dispatch={dispatch} />
         <GridContainer>
           {NFTTokenIds.slice(0, 20).map((nft, index) => (
-            <Card
-              hoverable
-              actions={[
-                <Tooltip title="View On Blockexplorer">
-                  <FileSearchOutlined
-                    onClick={() =>
-                      window.open(
-                        `${getExplorer(chainId)}address/${nft.token_address}`,
-                        "_blank"
-                      )
-                    }
-                  />
-                </Tooltip>,
-                <Tooltip title="Buy NFT">
-                  <ShoppingCartOutlined onClick={() => handleBuyClick(nft)} />
-                </Tooltip>,
-              ]}
-              style={{ width: 240, border: "2px solid #e7eaf3" }}
-              cover={
-                <Image
-                  preview={false}
-                  src={nft.image || "error"}
-                  fallback={fallbackImg}
-                  alt=""
-                  style={{ height: "240px" }}
-                />
-              }
-              key={index}
-            >
-              {getMarketItem(nft) && (
-                <Badge.Ribbon text="Buy Now" color="green"></Badge.Ribbon>
-              )}
-              <Meta title={nft.name} description={`#${nft.token_id}`} />
-            </Card>
+            <NFTCard nft={nft} key={index}/>
+            // <Card
+            //   hoverable
+            //   actions={[
+            //     <Tooltip title="View On Blockexplorer">
+            //       <FileSearchOutlined
+            //         onClick={() =>
+            //           window.open(
+            //             `${getExplorer(chainId)}address/${nft.token_address}`,
+            //             "_blank"
+            //           )
+            //         }
+            //       />
+            //     </Tooltip>,
+            //     <Tooltip title="Buy NFT">
+            //       <ShoppingCartOutlined onClick={() => handleBuyClick(nft)} />
+            //     </Tooltip>,
+            //   ]}
+            //   style={{ width: '100%', border: "2px solid #e7eaf3" }}
+            //   cover={
+            //     <Image
+            //       preview={false}
+            //       src={nft.image || "error"}
+            //       fallback={fallbackImg}
+            //       alt=""
+            //       style={{ height: "240px" }}
+            //     />
+            //   }
+            //   key={index}
+            // >
+            //   {getMarketItem(nft) && (
+            //     <Badge.Ribbon text="Buy Now" color="green"></Badge.Ribbon>
+            //   )}
+            //   <Meta title="PAYC" description={`#${nft.token_id}`} />
+            // </Card>
           ))}
         </GridContainer>
       </MarketPlaceContainer>
@@ -305,11 +307,19 @@ function NFTTokenIds({ collection, }) {
 }
 
 const MarketPlaceContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-gap: 5rem;
+  grid-template-columns: 1fr 5fr;
+`
+
+const FilterContainer = styled.div`
+  margin-right: 5rem;
 `
 
 const GridContainer = styled.div`
   display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 4fr 4fr 4fr;
 `
 
 export default NFTTokenIds;

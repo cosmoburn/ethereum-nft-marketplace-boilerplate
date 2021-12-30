@@ -13,7 +13,7 @@ const LandingPage = () => {
 
 const Landing = styled.div`
   display: flex;
-  height: 50px;
+  flex-direction: column;
 `
 
 const Header = styled.div`
