@@ -2,6 +2,7 @@ import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvide
 import { useEffect, useState } from "react";
 import { useMoralisWeb3Api, useMoralisWeb3ApiCall } from "react-moralis";
 import { useIPFS } from "./useIPFS";
+import { getCollection } from '../helpers/collections'
 
 export const useNFTBalance = (options) => {
   const { account } = useMoralisWeb3Api();
@@ -16,10 +17,12 @@ export const useNFTBalance = (options) => {
   } = useMoralisWeb3ApiCall(account.getNFTs, { chain: chainId, ...options });
   const [fetchSuccess, setFetchSuccess] = useState(true);
 
+  const collection = getCollection()
+
   useEffect(() => {
     const fetchData = async () => {
       if (data?.result) {
-        const NFTs = data.result;
+        const NFTs = data.result.filter((nft) => nft.token_address === collection.addrs);
         setFetchSuccess(true);
         for (let NFT of NFTs) {
           if (NFT?.metadata) {

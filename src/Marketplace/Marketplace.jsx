@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import { getNativeByChain } from "helpers/networks";
 import {
   useMoralis,
@@ -15,45 +15,48 @@ import { getExplorer } from "helpers/networks";
 import { useWeb3ExecuteFunction } from "react-moralis";
 import styled from '@emotion/styled'
 
+import Filter from './Filter'
+import CommonContainer from '../components/CommonContainer/CommonContainer'
+import Header from '../components/Header/Header'
+import PageTitle from '../components/PageTitle/PageTitle'
+
 
 const { Meta } = Card;
 
-const styles = {
-  NFTs: {
-    display: "flex",
-    flexWrap: "wrap",
-    WebkitBoxPack: "start",
-    justifyContent: "flex-start",
-    margin: "0 auto",
-    maxWidth: "1000px",
-    gap: "10px",
-  },
-  banner: {
-    display: "flex",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    margin: "0 auto",
-    width: "600px",
-    //borderRadius: "10px",
-    height: "150px",
-    marginBottom: "40px",
-    paddingBottom: "20px",
-    borderBottom: "solid 1px #e3e3e3",
-  },
-  logo: {
-    height: "115px",
-    width: "115px",
-    borderRadius: "50%",
-    // positon: "relative",
-    // marginTop: "-80px",
-    border: "solid 4px white",
-  },
-  text: {
-    // color: "#041836",
-    fontSize: "27px",
-    fontWeight: "bold",
-  },
+const initialState = {
+  bg: "",
+  clothes: "",
+  earring: "",
+  eyes: "",
+  fur: "",
+  hat: "",
+  mouth: "",
+  id: "",
+  selectedFilter: "",
+  selectorIsOpen: false
 };
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'select':
+      return {...state, [action.key]: action.value, selectedFilter: "", selectorIsOpen: false}
+    case 'toggleFilter':
+      const isFilterValueDifferent = action.value !== state.selectedFilter
+      // Case a new header is selected
+      if (isFilterValueDifferent) {
+        return {...state, selectorIsOpen: true, selectedFilter: action.value}
+      } else {
+        // Case same header is selected
+        const nextOpenState = !state.selectorIsOpen
+        const filterValue = nextOpenState === true ? action.value : ""
+        return {...state, selectorIsOpen: nextOpenState, selectedFilter: filterValue}
+      }
+    case 'reset':
+      return initialState
+    default:
+      throw new Error();
+  }
+}
 
 function NFTTokenIds({ collection, }) {
   const fallbackImg =
@@ -84,6 +87,11 @@ function NFTTokenIds({ collection, }) {
     ])
   );
   const purchaseItemFunction = "createMarketSale";
+
+  // Filter Region
+  const [state, dispatch] = useReducer(reducer, initialState);
+  console.log(state)
+  // Filter Region End
 
   async function purchase() {
     setLoading(true);
@@ -168,7 +176,8 @@ function NFTTokenIds({ collection, }) {
   };
 
   return (
-    <div>
+    <CommonContainer>
+      <Header/>
       {contractABIJson.noContractDeployed && (
         <>
           <Alert
@@ -189,63 +198,51 @@ function NFTTokenIds({ collection, }) {
               <div style={{ marginBottom: "10px" }}></div>
             </>
           )}
-          <PageTitle>
-            <h2>
-              <>
-                <div>Marketplace</div>
-                <div
-                  style={{
-                    fontSize: "15px",
-                    color: "#9c9c9c",
-                    fontWeight: "normal",
-                  }}
-                >
-                  Collection Size: {`${totalNFTs}`}
-                </div>
-              </>
-            </h2>
-          </PageTitle>
+          <PageTitle title="Marketplace"/>
         </>
       )}
 
-      <div style={styles.NFTs}>
-        {NFTTokenIds.slice(0, 20).map((nft, index) => (
-          <Card
-            hoverable
-            actions={[
-              <Tooltip title="View On Blockexplorer">
-                <FileSearchOutlined
-                  onClick={() =>
-                    window.open(
-                      `${getExplorer(chainId)}address/${nft.token_address}`,
-                      "_blank"
-                    )
-                  }
+      <MarketPlaceContainer>
+        <Filter state={state} dispatch={dispatch} />
+        <GridContainer>
+          {NFTTokenIds.slice(0, 20).map((nft, index) => (
+            <Card
+              hoverable
+              actions={[
+                <Tooltip title="View On Blockexplorer">
+                  <FileSearchOutlined
+                    onClick={() =>
+                      window.open(
+                        `${getExplorer(chainId)}address/${nft.token_address}`,
+                        "_blank"
+                      )
+                    }
+                  />
+                </Tooltip>,
+                <Tooltip title="Buy NFT">
+                  <ShoppingCartOutlined onClick={() => handleBuyClick(nft)} />
+                </Tooltip>,
+              ]}
+              style={{ width: 240, border: "2px solid #e7eaf3" }}
+              cover={
+                <Image
+                  preview={false}
+                  src={nft.image || "error"}
+                  fallback={fallbackImg}
+                  alt=""
+                  style={{ height: "240px" }}
                 />
-              </Tooltip>,
-              <Tooltip title="Buy NFT">
-                <ShoppingCartOutlined onClick={() => handleBuyClick(nft)} />
-              </Tooltip>,
-            ]}
-            style={{ width: 240, border: "2px solid #e7eaf3" }}
-            cover={
-              <Image
-                preview={false}
-                src={nft.image || "error"}
-                fallback={fallbackImg}
-                alt=""
-                style={{ height: "240px" }}
-              />
-            }
-            key={index}
-          >
-            {getMarketItem(nft) && (
-              <Badge.Ribbon text="Buy Now" color="green"></Badge.Ribbon>
-            )}
-            <Meta title={nft.name} description={`#${nft.token_id}`} />
-          </Card>
-        ))}
-      </div>
+              }
+              key={index}
+            >
+              {getMarketItem(nft) && (
+                <Badge.Ribbon text="Buy Now" color="green"></Badge.Ribbon>
+              )}
+              <Meta title={nft.name} description={`#${nft.token_id}`} />
+            </Card>
+          ))}
+        </GridContainer>
+      </MarketPlaceContainer>
       {getMarketItem(nftToBuy) ? (
         <Modal
           title={`Buy ${nftToBuy?.name} #${nftToBuy?.token_id}`}
@@ -303,12 +300,16 @@ function NFTTokenIds({ collection, }) {
           />
         </Modal>
       )}
-    </div>
+    </CommonContainer>
   );
 }
 
-const PageTitle = styled.div`
-  padding: 1rem 0;
+const MarketPlaceContainer = styled.div`
+  display: flex;
+`
+
+const GridContainer = styled.div`
+  display: grid;
 `
 
 export default NFTTokenIds;
