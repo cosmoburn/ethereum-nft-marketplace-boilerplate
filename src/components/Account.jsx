@@ -28,7 +28,7 @@ function Account() {
     <>
       <AccountButton onClick={() => setIsModalVisible(true)}>
         <p style={{ marginRight: "5px" }}>
-          {getEllipsisTxt(walletAddress, 6)}
+          {getEllipsisTxt(walletAddress, 4)}
         </p>
         <Blockie currentWallet scale={3} />
       </AccountButton>
@@ -104,6 +104,8 @@ const AccountButton = styled.div`
   letter-spacing: 1.2px;
   text-transform: uppercase;
   cursor: pointer;
+  display: flex;
+  align-items: center;
   
   :hover {
     background: white;

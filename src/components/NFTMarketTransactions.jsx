@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useMoralis, useMoralisQuery } from "react-moralis";
+import React from "react";
+import { useMoralisQuery } from "react-moralis";
 import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvider";
 import { Table, Tag, Space } from "antd";
 import { PolygonCurrency} from "./Chains/Logos";
@@ -14,7 +14,6 @@ const styles = {
 
 function NFTMarketTransactions() {
   const { walletAddress } = useMoralisDapp();
-  const { Moralis } = useMoralis();
   const queryItemImages = useMoralisQuery("ItemImages");
   const fetchItemImages = JSON.parse(
     JSON.stringify(queryItemImages.data, [
@@ -75,7 +74,10 @@ function NFTMarketTransactions() {
       key: "item",
       render: (text, record) => (
         <Space size="middle">
-          <img src={getImage(record.collection, record.item)} style={{ width: "40px", borderRadius:"4px"}} />
+          <img
+            alt="nft to buy"
+            src={getImage(record.collection, record.item)}
+            style={{ width: "40px", borderRadius:"4px"}} />
           <span>#{record.item}</span>
         </Space>
       ),
@@ -151,29 +153,29 @@ function NFTMarketTransactions() {
 }
 
 export default NFTMarketTransactions;
-const columns = [
-  {
-    title: "Date",
-    dataIndex: "date",
-    key: "date",
-  },
-  {
-    title: "Item",
-    key: "item",
-
-  },
-  {
-    title: "Collection",
-    key: "collection",
-  },
-  {
-    title: "Transaction Status",
-    key: "tags",
-    dataIndex: "tags",
-  },
-  {
-    title: "Price",
-    key: "price",
-    dataIndex: "price",
-  }
-];
+// const columns = [
+//   {
+//     title: "Date",
+//     dataIndex: "date",
+//     key: "date",
+//   },
+//   {
+//     title: "Item",
+//     key: "item",
+//
+//   },
+//   {
+//     title: "Collection",
+//     key: "collection",
+//   },
+//   {
+//     title: "Transaction Status",
+//     key: "tags",
+//     dataIndex: "tags",
+//   },
+//   {
+//     title: "Price",
+//     key: "price",
+//     dataIndex: "price",
+//   }
+// ];

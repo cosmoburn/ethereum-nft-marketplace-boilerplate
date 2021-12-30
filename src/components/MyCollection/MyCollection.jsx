@@ -6,6 +6,12 @@ import { FileSearchOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvider";
 import { getExplorer } from "helpers/networks";
 import { useWeb3ExecuteFunction } from "react-moralis";
+import styled from '@emotion/styled'
+
+import CommonContainer from '../CommonContainer/CommonContainer'
+import Header from '../Header/Header'
+import PageTitle from '../PageTitle/PageTitle'
+
 const { Meta } = Card;
 
 const styles = {
@@ -20,7 +26,7 @@ const styles = {
   },
 };
 
-function NFTBalance() {
+function MyCollection() {
   const { NFTBalance, fetchSuccess } = useNFTBalance();
   const { chainId, marketAddress, contractABI } = useMoralisDapp();
   const { Moralis } = useMoralis();
@@ -63,9 +69,8 @@ function NFTBalance() {
     });
   }
 
-
   async function approveAll(nft) {
-    setLoading(true);  
+    setLoading(true);
     const ops = {
       contractAddress: nft.token_address,
       functionName: "setApprovalForAll",
@@ -152,8 +157,10 @@ function NFTBalance() {
   }
 
   return (
-    <>
-      <div style={styles.NFTs}>
+    <CommonContainer>
+      <Header />
+      <PageTitle title="My Collection" />
+      <CollectionGrid>
         {contractABIJson.noContractDeployed && (
           <>
             <Alert
@@ -163,13 +170,12 @@ function NFTBalance() {
             <div style={{ marginBottom: "10px" }}></div>
           </>
         )}
-        {!fetchSuccess && (
+        {!fetchSuccess && !NFTBalance && (
           <>
             <Alert
               message="Unable to fetch all NFT metadata... We are searching for a solution, please try again later!"
               type="warning"
             />
-            <div style={{ marginBottom: "10px" }}></div>
           </>
         )}
         {NFTBalance &&
@@ -206,7 +212,7 @@ function NFTBalance() {
               <Meta title={nft.name} description={nft.contract_type} />
             </Card>
           ))}
-      </div>
+      </CollectionGrid>
 
       <Modal
         title={`List ${nftToSend?.name} #${nftToSend?.token_id} For Sale`}
@@ -228,6 +234,7 @@ function NFTBalance() {
       >
         <Spin spinning={loading}>
           <img
+            alt="nft to send"
             src={`${nftToSend?.image}`}
             style={{
               width: "250px",
@@ -243,8 +250,12 @@ function NFTBalance() {
           />
         </Spin>
       </Modal>
-    </>
+    </CommonContainer>
   );
 }
 
-export default NFTBalance;
+const CollectionGrid = styled.div`
+  display: grid;
+`
+
+export default MyCollection;
