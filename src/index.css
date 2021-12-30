@@ -32,6 +32,12 @@ body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
   background-color: black;
+  font-family: 'Montserrat', sans-serif;
+}
+
+h2 {
+  color: #BFC500;
+  font-size: 28px;
 }
 
 ul[class],

@@ -7,22 +7,7 @@ import { useState } from "react";
 import Address from "./Address/Address";
 import { SelectOutlined } from "@ant-design/icons";
 import { getExplorer } from "helpers/networks";
-const styles = {
-  account: {
-    height: "42px",
-    padding: "0 15px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "fit-content",
-    borderRadius: "12px",
-    backgroundColor: "rgb(244, 244, 244)",
-    cursor: "pointer",
-  },
-  text: {
-    color: "#21BF96",
-  },
-};
+import styled from '@emotion/styled'
 
 function Account() {
   const { authenticate, isAuthenticated, logout } = useMoralis();
@@ -31,23 +16,22 @@ function Account() {
 
   if (!isAuthenticated) {
     return (
-      <div
-        style={styles.account}
+      <AccountButton
         onClick={() => authenticate({ signingMessage: "Hello World!" })}
       >
-        <p style={styles.text}>Authenticate</p>
-      </div>
+        Connect
+      </AccountButton>
     );
   }
 
   return (
     <>
-      <div style={styles.account} onClick={() => setIsModalVisible(true)}>
-        <p style={{ marginRight: "5px", ...styles.text }}>
+      <AccountButton onClick={() => setIsModalVisible(true)}>
+        <p style={{ marginRight: "5px" }}>
           {getEllipsisTxt(walletAddress, 6)}
         </p>
         <Blockie currentWallet scale={3} />
-      </div>
+      </AccountButton>
       <Modal
         visible={isModalVisible}
         footer={null}
@@ -106,5 +90,25 @@ function Account() {
     </>
   );
 }
+
+const AccountButton = styled.div`
+  background-color: #bfc500;
+  border-radius: 8px;
+  color: #000;
+  border: 0;
+  font-weight: 700;
+  font-size: 14px;
+  padding: .5rem 5%;
+  margin: auto;
+  transition: .3s;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  
+  :hover {
+    background: white;
+    color: black;
+  }
+`
 
 export default Account;
