@@ -1,16 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { getNativeByChain } from "helpers/networks";
-import { getCollectionsByChain } from "helpers/collections";
 import {
   useMoralis,
   useMoralisQuery,
-  useNewMoralisObject,
 } from "react-moralis";
 import { Card, Image, Tooltip, Modal, Badge, Alert, Spin } from "antd";
 import { useNFTTokenIds } from "hooks/useNFTTokenIds";
 import {
   FileSearchOutlined,
-  RightCircleOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { useMoralisDapp } from "providers/MoralisDappProvider/MoralisDappProvider";
@@ -87,7 +84,6 @@ function NFTTokenIds({ collection, }) {
     ])
   );
   const purchaseItemFunction = "createMarketSale";
-  const NFTCollections = getCollectionsByChain(chainId);
 
   async function purchase() {
     setLoading(true);
@@ -272,6 +268,7 @@ function NFTTokenIds({ collection, }) {
                 } ${nativeName}`}
               >
                 <img
+                  alt="nft to buy"
                   src={nftToBuy?.image}
                   style={{
                     width: "250px",
@@ -291,6 +288,7 @@ function NFTTokenIds({ collection, }) {
           onOk={() => setVisibility(false)}
         >
           <img
+            alt="nft to buy"
             src={nftToBuy?.image}
             style={{
               width: "250px",

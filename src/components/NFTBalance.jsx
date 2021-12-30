@@ -65,7 +65,7 @@ function NFTBalance() {
 
 
   async function approveAll(nft) {
-    setLoading(true);  
+    setLoading(true);
     const ops = {
       contractAddress: nft.token_address,
       functionName: "setApprovalForAll",
@@ -228,6 +228,7 @@ function NFTBalance() {
       >
         <Spin spinning={loading}>
           <img
+            alt="nft to send"
             src={`${nftToSend?.image}`}
             style={{
               width: "250px",

@@ -1,4 +1,4 @@
-import { useEffect, useState} from "react";
+import { useEffect } from "react";
 import { useMoralis } from "react-moralis";
 import {
   BrowserRouter as Router,
@@ -10,7 +10,6 @@ import {
 import Account from "components/Account";
 import NFTBalance from "components/NFTBalance";
 import "antd/dist/antd.css";
-import NativeBalance from "components/NativeBalance";
 import "./style.css";
 import Text from "antd/lib/typography/Text";
 import NFTMarketTransactions from "components/NFTMarketTransactions";
@@ -18,7 +17,7 @@ import Marketplace from './Marketplace/Marketplace'
 import { getCollection } from './helpers/collections'
 import styled from '@emotion/styled'
 
-const App = ({ isServerInfo }) => {
+const App = () => {
   const { isWeb3Enabled, enableWeb3, isAuthenticated, isWeb3EnableLoading } =
     useMoralis();
 
@@ -26,6 +25,8 @@ const App = ({ isServerInfo }) => {
 
   useEffect(() => {
     if (isAuthenticated && !isWeb3Enabled && !isWeb3EnableLoading) enableWeb3();
+    console.log('web3', isWeb3Enabled)
+    console.log('authenticated', isAuthenticated)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, isWeb3Enabled]);
 
@@ -47,7 +48,6 @@ const App = ({ isServerInfo }) => {
             <NavLink to="/" >FAQ</NavLink>
           </Menu>
           <AccountContainer>
-            {/*<NativeBalance />*/}
             <Account />
           </AccountContainer>
         </Header>
@@ -57,7 +57,6 @@ const App = ({ isServerInfo }) => {
               <NFTBalance />
             </Route>
             <Route path="/NFTMarketPlace">
-              {/*<NFTTokenIds inputValue={inputValue} setInputValue={setInputValue}/>*/}
               <Marketplace collection={collection}/>
             </Route>
             <Route path="/Transactions">
