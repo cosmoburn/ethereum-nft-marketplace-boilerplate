@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from '@emotion/styled'
 import ReactPlayer from 'react-player'
 import { Image } from 'antd'
@@ -23,16 +24,16 @@ const LandingPage = () => {
             />
           </HeaderLogo>
           <HeaderSocial>
-            <a>
+            <a href="#">
               <FontAwesomeIcon icon={faYoutube} color="white" />
             </a>
-            <a>
+            <a href="#">
               <FontAwesomeIcon icon={faInstagram} color="white" />
             </a>
-            <a>
+            <a href="https://discord.com/invite/xkh9AEbgNH">
               <FontAwesomeIcon icon={faDiscord} color="white" />
             </a>
-            <a>
+            <a href="https://twitter.com/phunkyApeYC" >
               <FontAwesomeIcon icon={faTwitter} color="white" />
             </a>
           </HeaderSocial>
@@ -55,12 +56,14 @@ const LandingPage = () => {
               yacht club
             </CTAText>
             <CTAButton>
-              <PrimaryButton text="Enter marketplace" />
+              <Link to="/marketplace">
+                <PrimaryButton text="Enter marketplace" />
+              </Link>
             </CTAButton>
           </CTA>
         </Content>
         <ProjectDescription>
-          An limitless NFT collection where the token itself doubles as a statement that we are sick<br/>
+          A limitless NFT collection where the token itself doubles as a statement that we are sick<br/>
           and tired of the red tape mentality perpetuated by the right facing Blue Chips.
         </ProjectDescription>
       </CommonContainer>
@@ -74,16 +77,16 @@ const LandingPage = () => {
           />
         </HeaderLogo>
         <HeaderSocial>
-          <a>
+          <a href="#">
             <FontAwesomeIcon icon={faYoutube} color="white" />
           </a>
-          <a>
+          <a href="#">
             <FontAwesomeIcon icon={faInstagram} color="white" />
           </a>
-          <a>
+          <a href="https://discord.com/invite/xkh9AEbgNH">
             <FontAwesomeIcon icon={faDiscord} color="white" />
           </a>
-          <a>
+          <a href="https://twitter.com/phunkyApeYC" >
             <FontAwesomeIcon icon={faTwitter} color="white" />
           </a>
         </HeaderSocial>

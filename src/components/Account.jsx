@@ -8,6 +8,7 @@ import Address from "./Address/Address";
 import { SelectOutlined } from "@ant-design/icons";
 import { getExplorer } from "helpers/networks";
 import styled from '@emotion/styled'
+import PrimaryButton from './PrimaryButton/PrimaryButton'
 
 function Account() {
   const { authenticate, isAuthenticated, logout } = useMoralis();
@@ -16,22 +17,21 @@ function Account() {
 
   if (!isAuthenticated) {
     return (
-      <AccountButton
+      <PrimaryButton
         onClick={() => authenticate({ signingMessage: "Hello World!" })}
-      >
-        Connect
-      </AccountButton>
+        text="Connect"
+      />
     );
   }
 
   return (
-    <>
-      <AccountButton onClick={() => setIsModalVisible(true)}>
-        <p style={{ marginRight: "5px" }}>
-          {getEllipsisTxt(walletAddress, 4)}
-        </p>
-        <Blockie currentWallet scale={3} />
-      </AccountButton>
+    <AccountContainer>
+      <PrimaryButton
+        onClick={() => setIsModalVisible(true)}
+        text={getEllipsisTxt(walletAddress, 4)}
+        >
+          <Blockie currentWallet scale={3} />
+      </PrimaryButton>
       <Modal
         visible={isModalVisible}
         footer={null}
@@ -87,30 +87,13 @@ function Account() {
           Disconnect Wallet
         </Button>
       </Modal>
-    </>
+    </AccountContainer>
   );
 }
 
-const AccountButton = styled.div`
-  background-color: #bfc500;
-  border-radius: 8px;
-  color: #000;
-  border: 0;
-  font-weight: 700;
-  font-size: 14px;
-  padding: .5rem 5%;
-  margin: auto;
-  transition: .3s;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  cursor: pointer;
+const AccountContainer = styled.div`
   display: flex;
-  align-items: center;
-  
-  :hover {
-    background: white;
-    color: black;
-  }
+  width: 100%;
 `
 
 export default Account;

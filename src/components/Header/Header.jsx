@@ -3,15 +3,20 @@ import { NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
 
 import Account from '../Account'
+import { Image } from 'antd'
 
 const Header = () => {
   return (
     <AppHeader>
-      <NavLink to="/" >
-        <Logo>
-          LOGO
-        </Logo>
-      </NavLink>
+
+      <StyledNavLink to="/" >
+        <Image
+          preview={false}
+          src="https://ik.imagekit.io/nldjkvbypwl/notYugalabs_2Wup2mc_Diw.png?updatedAt=1640903602465"
+          alt=""
+          style={{ width: "100px", height: "auto"}}
+        />
+      </StyledNavLink>
       <Menu
         theme="light"
         mode="horizontal"
@@ -29,21 +34,21 @@ const Header = () => {
 }
 
 const AppHeader = styled.header`
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 8fr 2fr;
+  padding-top: 1rem;
 `
 
-const Logo = styled.div`
+const StyledNavLink = styled(NavLink)`
   display: flex;
+  justify-content: center;
   align-items: center;
 `
 
 const Menu = styled.menu`
-  flex-grow: 2;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-right: 2rem;
   a {
     color: #fff;
     font-size: 8px;
@@ -65,7 +70,8 @@ const Menu = styled.menu`
 
 const AccountContainer = styled.div`
   display: flex;
-  flex-grow: 1;
   align-items: center;
+  justify-content: flex-end;
+  padding-left: 1rem;
 `
 export default Header

@@ -179,6 +179,7 @@ function NFTTokenIds({ collection, }) {
   return (
     <CommonContainer>
       <Header/>
+      <PageTitle title="Marketplace"/>
       {contractABIJson.noContractDeployed && (
         <>
           <Alert
@@ -199,7 +200,6 @@ function NFTTokenIds({ collection, }) {
               <div style={{ marginBottom: "10px" }}></div>
             </>
           )}
-          <PageTitle title="Marketplace"/>
         </>
       )}
 
